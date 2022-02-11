@@ -56,7 +56,12 @@ class AUTO(commands.Cog):
       if not(ewe==None) and not(owo==None):
         if (ewe[1] == 'w' and (iwi == ' ' or iwi == None)) or (owo[1] == 'w' and (uwu == ' ' or uwu == None)):
           lmsg=msg
-          await lmsg.delete()
+          if str(ctx.author.id) in ['358402076574744577','270048463079604224', '582730177763737640']:
+            # print('okidoki :D')
+            pass
+          else:
+            # print(ctx.author.id)
+            await lmsg.delete()
 
     if ctx.content[:2]=='r/':
       embed=discord.Embed(title=ctx.content, url=f'https://www.reddit.com/{ctx.content}',color=0xfe4503)

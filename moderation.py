@@ -131,6 +131,66 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
       await ctx.send('That user isn\'t in purgatory!')
     await ctx.send(f'<@{member.id}> has been **REVIVED**.')
 
+  
+  @commands.command(name='superpurge',help='Send someone to the depths')
+  @commands.has_permissions(administrator=True)
+  @is_in_guild([612845460360527883])
+  async def superpurge(self,ctx, member:discord.Member, amt=None):
+    addrole = discord.utils.get(member.guild.roles, name="the furriest")
+    remrole = discord.utils.get(member.guild.roles, name="purgatory")
+
+    await discord.Member.add_roles(member, addrole)
+
+    try:
+      await discord.Member.remove_roles(member, remrole)
+    except:
+      await ctx.send('That user cannot be sent to purgatory!')
+    await ctx.send(f'<@{member.id}> has been ***SUPERPURGED***.')
+    if amt != None:
+      try:
+        unit=amt[-1]
+        amount=int(amt[:-1])
+        un=None
+        if unit=='s':
+          un=1
+        elif unit=='m':
+          un=60
+        elif unit=='h':
+          un=3600
+        elif unit=='d':
+          un=86400
+        tot = un*amount
+        await asyncio.sleep(tot)
+
+        addrole = discord.utils.get(member.guild.roles, name="purgatory")
+        remrole = discord.utils.get(member.guild.roles, name="the furriest")
+
+        await discord.Member.add_roles(member, addrole)
+        
+        try:
+          await discord.Member.remove_roles(member, remrole)
+        except:
+          await ctx.send(f'error: {member} was not revived')
+        await ctx.send(f'<@{member.id}> has been **REVIVED**.')
+      except:
+        await ctx.send('Invalid amount of time!')
+
+  @commands.command(name='superrevive',help='Send someone to purgatory')
+  @commands.has_permissions(administrator=True)
+  @is_in_guild([612845460360527883])
+  async def superrevive(self,ctx, member:discord.Member):
+    addrole = discord.utils.get(member.guild.roles, name="purgatory")
+    remrole = discord.utils.get(member.guild.roles, name="the furriest")
+
+    await discord.Member.add_roles(member, addrole)
+
+    try:
+      await discord.Member.remove_roles(member, remrole)
+    except:
+      await ctx.send('That user isn\'t in purgatory!')
+    await ctx.send(f'<@{member.id}> has been **REVIVED** (to purgatory).')
+
+
 
   @commands.command(name='mute',help='Stop someone from sending messages')
   @commands.has_permissions(administrator=True)

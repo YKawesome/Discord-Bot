@@ -11,6 +11,7 @@ python-dotenv = "^0.15.0"
 flask = "^1.1.2"
 bs4 = "^0.0.1"
 youtube_dl = "^2021.6.6"
+discord-ui = "^5.1.6"
 
 [tool.poetry.dev-dependencies]
 

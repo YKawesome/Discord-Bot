@@ -1,6 +1,7 @@
 import random
 import requests
 import discord
+from discord.ui import Button, View
 from discord.ext import commands
 import json
 from discord.utils import get
@@ -22,6 +23,15 @@ class FUN(commands.Cog,description="Miscellaneous/fun commands suggested by memb
     if not ctx.author.bot:
       global snipe
       snipe=ctx
+
+
+  @commands.command(name='buttontest',help='button wrapper testing', aliases= ['btn'])
+  async def buttontest(self,ctx):
+    button = Button(label='click me', style=discord.ButtonStyle.green,emoji='👋')
+    view = View()
+    view.add_item(button)
+    await ctx.send("Hi!", view=view)
+
 
   @commands.command(name='snipe',help='snipes the last message')
   async def snipe(self,ctx):
