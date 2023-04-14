@@ -22,8 +22,12 @@ class INFO(commands.Cog,description='informational commands'):
       return ctx.guild and go
     return commands.check(predicate)
 
+  
+  @commands.command(name='lithw',help=' can send hw easier heh')
+  async def lithw(self,ctx, message:str):
+    print(ctx.content)
 
-
+  
   @commands.command(name='prefix',help='Displays the prefixes for the bots in Beckman Sophomores')
   @is_in_guild([612845460360527883])
   async def prefixes(self,ctx):
@@ -144,8 +148,8 @@ class INFO(commands.Cog,description='informational commands'):
   async def states(self,ctx):
     await ctx.send(['u.s. total*', 'american samoa', 'palau', 'northern mariana islands', 'alaska', 'guam', 'west virginia', 'new mexico', 'connecticut', 'north dakota', 'oklahoma', 'washington, d.c.', 'south dakota', 'virginia', 'delaware', 'wisconsin', 'arkansas', 'maine', 'vermont', 'hawaii', 'wyoming', 'oregon', 'montana', 'kentucky', 'minnesota', 'north carolina', 'washington', 'louisiana', 'michigan', 'california', 'colorado', 'new jersey', 'florida', 'arizona', 'mississippi', 'utah', 'new york', 'massachusetts', 'indiana', 'new hampshire', 'nevada', 'south carolina', 'ohio', 'georgia', 'illinois', 'maryland', 'texas', 'pennsylvania', 'nebraska', 'tennessee', 'idaho', 'rhode island', 'kansas', 'missouri', 'alabama', 'marshall islands', 'iowa', 'puerto rico', 'u.s. virgin islands', 'micronesia', 'federal agencies'])
 
-def setup(bot: commands.Bot):
-    bot.add_cog(INFO(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(INFO(bot))
 
 
 

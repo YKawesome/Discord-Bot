@@ -1,10 +1,11 @@
 
 import discord
+from discord import app_commands
 from discord.ext import commands
 import random
 from discord.utils import get
 import asyncio
-
+import datetime
 
 data = {
   "Beckman Sophomores": "Admin Role",
@@ -18,7 +19,7 @@ data = {
 
 
 
-
+listofsends=[]
 listy = []
 for key in data:
   listy.append(data[key])
@@ -40,6 +41,7 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
     return commands.check(predicate)
   
 
+  
   @commands.command(name='temp',help='sends the current embed')
   @commands.has_permissions(administrator=True)
   @is_in_guild([612845460360527883])
@@ -73,6 +75,24 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
     embed=discord.Embed(title=f":white_check_mark: *{member.name+'#'+member.discriminator} was given archive access*", color=0x00ffaa)
     await ctx.send(embed=embed)
 
+  @commands.command(name='userlockout',help='remove someone from all channels', aliases=['ulmao'])
+  @commands.has_permissions(administrator=True)
+  async def userlockout(self,ctx, member:discord.Member):
+    # print(ctx.server.channels)
+    for channel in ctx.guild.channels:
+
+      await channel.set_permissions(member, view_channel=False)
+    # await ctx.channel.set_permissions(member, overwrite=None)
+  
+  @commands.command(name='userfree',help='bring back someone from all channels', aliases=['ufree'])
+  @commands.has_permissions(administrator=True)
+  async def userfree(self,ctx, member:discord.Member):
+    # print(ctx.server.channels)
+    for channel in ctx.guild.channels:
+
+      # await channel.set_permissions(member, view_channel=False)
+      await channel.set_permissions(member, overwrite=None)
+      
   @commands.command(name='purge',help='Send someone to purgatory')
   @commands.has_permissions(administrator=True)
   @is_in_guild([612845460360527883])
@@ -335,13 +355,27 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
     else:
       await show_permission_error(ctx, embed)
 
-  @commands.command(name='send',help='send a message in the channel from the bot')
+  @commands.command(name='send',help='send a message in the channel from the bot',aliases=['s'])
   @commands.has_permissions(administrator=True)
   async def send(self,ctx,*,msg:str):
     await ctx.send(msg)
     lmsg = await ctx.fetch_message(ctx.message.id)
     await lmsg.delete()
-    print(ctx.author + ': ' + msg)
+    listofsends.append((ctx.author.nick,msg))
+    embed=discord.Embed(title=f'{ctx.author.name} sent a message.', description=f"{msg}", url=f'{ctx.message.jump_url}', color=0x43b582)
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    timingdate = ctx.message.created_at.strftime('%Y-%m-%d')
+    timingtime= ctx.message.created_at.strftime('%H:%M:%S')
+    embed.set_footer(text=f"In channel #{ctx.channel.name} • {timingdate} at {timingtime}")
+    chn = self.bot.get_channel(621213039202402315)
+    await chn.send(embed=embed)
+
+    
+  
+  @commands.command(name='sendhistory',help='sends history of bot msgs',aliases=['sh'])
+  
+  async def sendhistory(self,ctx):
+    await ctx.send(listofsends)
   
   @commands.command(name='reply',help='reply to a message given an id | Type "True" at the end and it will ping them as well')
   @commands.has_permissions(administrator=True)
@@ -364,6 +398,13 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
 
     lmsg = await ctx.fetch_message(ctx.message.id)
     await lmsg.delete()
+    embed=discord.Embed(title=f'{ctx.author.name} sent a message reply.', description=f"{msg}", url=f'{ctx.message.jump_url}', color=0x43b582)
+    embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    timingdate = ctx.message.created_at.strftime('%Y-%m-%d')
+    timingtime= ctx.message.created_at.strftime('%H:%M:%S')
+    embed.set_footer(text=f"In channel #{ctx.channel.name} • {timingdate} at {timingtime}")
+    chn = self.bot.get_channel(621213039202402315)
+    await chn.send(embed=embed)
   
 
 
@@ -600,8 +641,8 @@ class MODERATION(commands.Cog,description="Moderation commands for admins"):
       else:
           await ctx.send("This does not work in DMs.")
 
-def setup(bot: commands.Bot):
-    bot.add_cog(MODERATION(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(MODERATION(bot))
 
 
 

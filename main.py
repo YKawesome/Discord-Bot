@@ -15,14 +15,14 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 startup_extensions = [
-    "fun", "moderation", "school", "info", "quotes", "autorespond"
+    "fun", "moderation", "school", "info", "quotes", "autorespond", "aplcoms"
 ]
 
 # startup_extensions = ["school", "info"]
 
 # 2
-bot = commands.Bot(command_prefix='*', description=description)
-
+bot = commands.Bot(command_prefix='*', description=description, intents=discord.Intents.all())
+#get ready for v2
 
 @bot.event
 async def on_ready():
@@ -42,16 +42,15 @@ async def on_command_error(ctx, error):
 		               error.retry_after)
 
 
-if __name__ == "__main__":
+
+# if __name__ == "__main__":
+@bot.event
+async def setup_hook():
 	for extension in startup_extensions:
 		try:
-			bot.load_extension(extension)
+			await bot.load_extension(extension)
 		except Exception as e:
 			exc = '{}: {}'.format(type(e).__name__, e)
 			print('Failed to load extension {}\n{}'.format(extension, exc))
 
-	bot.run(TOKEN)
-
-# for file in os.listdir("/home/user/bot/commands"):
-#     if file.endswith(".py"):
-#         client.load_extension(f'commands.{file[:-3]}')
+bot.run(TOKEN) 

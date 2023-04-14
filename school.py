@@ -308,8 +308,8 @@ class SCHOOL(commands.Cog,description='school-related commands'):
   #   embedVar.set_image(url=lolm)
   #   await ctx.send(embed=embedVar)
 
-def setup(bot: commands.Bot):
-    bot.add_cog(SCHOOL(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(SCHOOL(bot))
 
 
 

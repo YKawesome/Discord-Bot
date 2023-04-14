@@ -219,8 +219,8 @@ class QUOTES(commands.Cog,description='Anything to do with quotes'):
       listy.append(x.split(':')[0])
     await ctx.send(listy)
 
-def setup(bot: commands.Bot):
-    bot.add_cog(QUOTES(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(QUOTES(bot))
 
 
 

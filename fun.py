@@ -1,7 +1,9 @@
 import random
 import requests
 import discord
-from discord.ui import Button, View
+# import discord_ui
+# from discord_ui import UI, Button, LinkButton
+# from discord_ui import Button, View
 from discord.ext import commands
 import json
 from discord.utils import get
@@ -17,6 +19,8 @@ snipe=''
 class FUN(commands.Cog,description="Miscellaneous/fun commands suggested by members"):
   def __init__(self, bot):
     self.bot = bot
+    # ui = UI(self.bot)
+    
   
   @commands.Cog.listener()
   async def on_message_delete(self,ctx):
@@ -25,13 +29,14 @@ class FUN(commands.Cog,description="Miscellaneous/fun commands suggested by memb
       snipe=ctx
 
 
-  @commands.command(name='buttontest',help='button wrapper testing', aliases= ['btn'])
-  async def buttontest(self,ctx):
-    button = Button(label='click me', style=discord.ButtonStyle.green,emoji='👋')
-    view = View()
-    view.add_item(button)
-    await ctx.send("Hi!", view=view)
-
+  # @commands.command(name='buttontest',help='button wrapper testing', aliases= ['btn'])
+  # async def buttontest(self,ctx):
+  #   msg = await ctx.send("you", components=[[Button("press me", color="green"), LinkButton("https://discord.com", emoji="😁")], Button(custom_id="my_custom_id")])
+  #   try:
+  #       btn = await msg.wait_for("button", self, by=ctx.author, timeout=20)
+  #       await btn.respond("you pressed `" + btn.content + "`")
+  #   except TimeoutError:
+  #       await msg.delete()
 
   @commands.command(name='snipe',help='snipes the last message')
   async def snipe(self,ctx):
@@ -212,5 +217,5 @@ class FUN(commands.Cog,description="Miscellaneous/fun commands suggested by memb
     await ctx.send(final)
 
 
-def setup(bot: commands.Bot):
-    bot.add_cog(FUN(bot))
+async def setup(bot: commands.Bot):
+    await bot.add_cog(FUN(bot))
